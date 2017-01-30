@@ -1,28 +1,26 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 
-import { SQLite } from 'ionic-native';
 import { ShowTaskPage } from '../show-task/show-task';
+
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
 @Component({
   selector: 'page-page2',
   templateUrl: 'page2.html'
 })
 export class Page2 {
-  database: SQLite;
   selectedItem: any;
   icons: string[];
-  items: Array<{title: string, note: string, fullNote: string, icon: string}>;
+  items: FirebaseListObservable<any>;
   showTaskPage = ShowTaskPage;
+  showOnlyCompletedActives = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.database = new SQLite();
-    this.database.openDatabase({name: "data.db", location: "default"}).then(() => {
-        this.refreshData();
-    }, (error) => {
-        console.log("ERROR: ", error);
-    });
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public af: AngularFire, 
+              public actionSheetCtrl: ActionSheetController) {
 
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
@@ -31,31 +29,66 @@ export class Page2 {
     this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
     'american-football', 'boat', 'bluetooth', 'build'];
 
-    this.items = [];
-
+    this.queryTasks();
   }
-  
-  refreshData() {
-    this.database.executeSql("SELECT * FROM todos", []).then((data) => {
-          if(data.rows.length > 0) {
-              for(var i = 0; i < data.rows.length; i++) {
-                this.items.push({
-                  title: '#' + data.rows.item(i).id,
-                  note: data.rows.item(i).todoText,//.substring(0, 15),
-                  fullNote: data.rows.item(i).todoText,
-                  icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-                });
-              }
-          }
-      }, (error) => {
-          console.log("ERROR: " + JSON.stringify(error));
-      });
+  queryTasks() {
+      if(this.showOnlyCompletedActives) {
+        this.items =  this.af.database.list('/todos', {
+                        query: {
+                          orderByChild: 'completed',
+                          equalTo: true
+                        }
+                      });
+      } else {
+        this.items =  this.af.database.list('/todos');
+      }
   }
 
   itemTapped(event, item) {
+    this.presentActionSheet(item);
+
     // // That's right, we're pushing to ourselves!
-    this.navCtrl.push(this.showTaskPage, {
-      item: item
+    // this.navCtrl.push(this.showTaskPage, {
+    //   item: item
+    // });
+  }
+
+  presentActionSheet(item) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Ações',
+      buttons: [
+        {
+          text: 'Marcar como feita',
+          icon: 'archive',
+          handler: () => {
+            this.markAsCompleted(item);
+          }
+        },
+        {
+          text: 'Apagar',
+          icon: 'trash',
+          role: 'destructive',
+          handler: () => {
+            this.delete(item);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          icon: 'close',
+          handler: () => {
+          }
+        }
+      ]
     });
+    actionSheet.present();
+  }
+
+  markAsCompleted(item) {
+    this.items.update(item, {completed: true});
+  }
+
+  delete(item) {
+    this.items.remove(item);
   }
 }

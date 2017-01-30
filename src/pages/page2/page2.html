@@ -4,18 +4,23 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Listagem de Tarefas</ion-title>
+
+    <ion-buttons end>
+      <ion-toggle right [(ngModel)]="showOnlyCompletedActives" (ngModelChange)="queryTasks()"></ion-toggle>
+    </ion-buttons>
+    
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+    <button ion-item *ngFor="let item of items  | async" (click)="itemTapped($event, item)">
       <ion-icon [name]="item.icon" item-left></ion-icon>
-      {{item.title}}
-      <div class="item-note item-text-wrap" item-right >
+      <div class="item-note item-text-wrap" >
         {{item.note}}
       </div>
     </button>
   </ion-list>
-  <button [navPush]="showTaskPage">Go Task Page</button>
 </ion-content>
+
+

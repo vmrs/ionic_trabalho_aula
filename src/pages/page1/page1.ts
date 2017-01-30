@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, AlertController } from 'ionic-angular';
 
-import { SQLite } from 'ionic-native';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
+
 
 @Component({
   selector: 'page-page1',
@@ -10,30 +11,15 @@ import { SQLite } from 'ionic-native';
 })
 export class Page1 {
 
-  database: SQLite;
   txtTarefa: string;
-  txtTarefas: string[] = [];
+  items: FirebaseListObservable<any>;
+  size: number = 0;
 
-  constructor(public navCtrsl: NavController, private alertCtrl: AlertController) {
-    this.database = new SQLite();
-    this.database.openDatabase({name: "data.db", location: "default"}).then(() => {
-        this.refreshData();
-    }, (error) => {
-        console.log("ERROR: ", error);
-    });
-  }
-
-  refreshData() : void {
-    this.database.executeSql("SELECT * FROM todos", []).then((data) => {
-        this.txtTarefas = [];
-        if(data.rows.length > 0) {
-            for(var i = 0; i < data.rows.length; i++) {
-                this.txtTarefas.push(data.rows.item(i).todoText);
-            }
-        }
-    }, (error) => {
-        console.log("ERROR: " + JSON.stringify(error));
-    });
+  constructor(public navCtrsl: NavController, private alertCtrl: AlertController, af: AngularFire) {
+    this.items = af.database.list('/todos');
+    this.items.subscribe(
+      val => this.size = val.length
+    )
   }
 
   salvarTarefa() : void {
@@ -59,13 +45,11 @@ export class Page1 {
   }
 
   salvar() : void {
-    this.database.executeSql("INSERT INTO todos (todoText) VALUES ('"+this.txtTarefa+"')", []).then((data) => {
-        console.log("INSERTED: " + JSON.stringify(data));
-        this.refreshData();
-        this.txtTarefa = "";
-    }, (error) => {
-        console.log("ERROR: " + JSON.stringify(error.err));
+    // alert(this.items.length);
+    this.items.push({
+      note: this.txtTarefa
     });
+    this.txtTarefa = "";
   }
 
 }
