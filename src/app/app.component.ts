@@ -19,26 +19,30 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public auth: AuthService) {
-    this.initializeApp();
+    this.auth.subscribe((result) => {
+      this.initializeApp();
+    });
+    
+    
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Adicionar Tarefa', component: Page1 },
       { title: 'Listar Tarefas', component: Page2 }
     ];
-
-    if(this.auth.authenticated) {
-      this.rootPage = Page1;
-    } else {
-      this.rootPage = LoginPage;
-    }
-
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+
+      if(this.auth.authenticated) {
+        this.nav.setRoot(Page1);
+      } else {
+        this.nav.setRoot(LoginPage);
+      }
+
       StatusBar.styleDefault();
       Splashscreen.hide();
     });

@@ -6,14 +6,22 @@ export class AuthService {
   private authState: FirebaseAuthState;
 
   constructor(public auth$: AngularFireAuth) {
-    auth$.subscribe((state: FirebaseAuthState) => {
+    this.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
       console.log(JSON.stringify(this.authState));
     });
   }
 
+  subscribe(observer) {
+    this.auth$.subscribe(observer);
+  }
+
+  get uid() {
+    return this.authState.uid
+  }
+
   get authenticated(): boolean {
-    return this.authState !== null;
+    return this.authState != null;
   }
 
   signInWithPassword(user): firebase.Promise<FirebaseAuthState> {
