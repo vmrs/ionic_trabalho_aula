@@ -4,7 +4,9 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
+import { LoginPage } from '../pages/login/login';
 
+import { AuthService } from '../providers/auth-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -12,11 +14,11 @@ import { Page2 } from '../pages/page2/page2';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Page1;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform) {
+  constructor(public platform: Platform, public auth: AuthService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -24,6 +26,12 @@ export class MyApp {
       { title: 'Adicionar Tarefa', component: Page1 },
       { title: 'Listar Tarefas', component: Page2 }
     ];
+
+    if(this.auth.authenticated) {
+      this.rootPage = Page1;
+    } else {
+      this.rootPage = LoginPage;
+    }
 
   }
 
