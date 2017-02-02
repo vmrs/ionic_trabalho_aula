@@ -21,6 +21,14 @@
       </div>
     </button>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="queryTasks($event)"
+    icon="ion-loading-c">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
 
 

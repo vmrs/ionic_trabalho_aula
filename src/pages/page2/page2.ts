@@ -15,7 +15,9 @@ export class Page2 {
   icons: string[];
   items: FirebaseListObservable<any>;
   showTaskPage = ShowTaskPage;
-  showOnlyCompletedActives = true;
+  showOnlyCompletedActives = false;
+  limit = 15;
+
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -29,19 +31,33 @@ export class Page2 {
     this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
     'american-football', 'boat', 'bluetooth', 'build'];
 
-    this.queryTasks();
+    this.queryTasks(null);
   }
-  queryTasks() {
+
+  queryTasks(infiniteScroll) {
       if(this.showOnlyCompletedActives) {
         this.items =  this.af.database.list('/todos', {
                         query: {
                           orderByChild: 'completed',
-                          equalTo: true
+                          equalTo: true,
+                          limitToFirst: this.limit
                         }
                       });
       } else {
-        this.items =  this.af.database.list('/todos');
+        this.items =  this.af.database.list('/todos', {
+                          query: {
+                          limitToFirst: this.limit
+                        }
+                      });
       }
+
+      if(infiniteScroll) {
+        this.items.subscribe(
+          result => infiniteScroll.complete()
+        );
+      }
+
+      this.limit *= 2;
   }
 
   itemTapped(event, item) {

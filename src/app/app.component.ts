@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
+import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
@@ -33,20 +33,6 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
-
-      let db = new SQLite();
-      db.openDatabase({
-          name: "data.db",
-          location: "default"
-      }).then(() => {
-          db.executeSql("CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, todoText TEXT)", {}).then((data) => {
-              console.log("TABLE CREATED: ", data);
-          }, (error) => {
-              console.error("Unable to execute sql", error);
-          })
-      }, (error) => {
-          console.error("Unable to open database", error);
-      });
     });
   }
 
