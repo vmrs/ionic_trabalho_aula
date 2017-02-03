@@ -8,6 +8,8 @@ import { LoginPage } from '../pages/login/login';
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
+
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
  
 export const firebaseConfig = {
   apiKey: "AIzaSyDBsHvTR0wYxf5V0b-C_JjoGErHJCEho8g",
@@ -15,6 +17,24 @@ export const firebaseConfig = {
   databaseURL: "https://todo-5d8fc.firebaseio.com",
   storageBucket: "todo-5d8fc.appspot.com",
   messagingSenderId: "901124139844"
+};
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'd9067871'
+  },
+  'push': {
+    'sender_id': '901124139844',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434'
+      }
+    }
+  }
 };
 
 @NgModule({
@@ -27,7 +47,8 @@ export const firebaseConfig = {
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

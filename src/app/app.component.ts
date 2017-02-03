@@ -8,6 +8,11 @@ import { LoginPage } from '../pages/login/login';
 
 import { AuthService } from '../providers/auth-service';
 
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,13 +23,23 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public auth: AuthService) {
+  constructor(public platform: Platform, public auth: AuthService, public push: Push) {
     this.auth.subscribe((result) => {
       this.initializeApp();
+
+      this.push.register().then((t: PushToken) => {
+        return this.push.saveToken(t);
+      }).then((t: PushToken) => {
+        console.log('Token saved:', t.token);
+      });
+
+      this.push.rx.notification()
+      .subscribe((msg) => {
+        alert(msg.title + ': ' + msg.text);
+      });
+      
     });
     
-    
-
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Adicionar Tarefa', component: Page1 },

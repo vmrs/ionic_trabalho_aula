@@ -23,10 +23,6 @@ export class Page1 {
       val => this.size = val.length
     )
   }
-  
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TestPage');
-  }
 
   salvarTarefa() : void {
     let alert = this.alertCtrl.create({
