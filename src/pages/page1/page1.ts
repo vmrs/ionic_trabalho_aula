@@ -4,6 +4,8 @@ import { NavController, AlertController } from 'ionic-angular';
 
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
+import { AuthService } from '../../providers/auth-service';
+
 
 @Component({
   selector: 'page-page1',
@@ -15,11 +17,15 @@ export class Page1 {
   items: FirebaseListObservable<any>;
   size: number = 0;
 
-  constructor(public navCtrsl: NavController, private alertCtrl: AlertController, af: AngularFire) {
-    this.items = af.database.list('/todos');
+  constructor(public navCtrsl: NavController, private alertCtrl: AlertController, af: AngularFire, private auth: AuthService) {
+    this.items = af.database.list('/todos/'+this.auth.uid);
     this.items.subscribe(
       val => this.size = val.length
     )
+  }
+  
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad TestPage');
   }
 
   salvarTarefa() : void {

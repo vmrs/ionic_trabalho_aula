@@ -6,6 +6,8 @@ import { ShowTaskPage } from '../show-task/show-task';
 
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
+import { AuthService } from '../../providers/auth-service';
+
 @Component({
   selector: 'page-page2',
   templateUrl: 'page2.html'
@@ -22,7 +24,8 @@ export class Page2 {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
               public af: AngularFire, 
-              public actionSheetCtrl: ActionSheetController) {
+              public actionSheetCtrl: ActionSheetController,
+              public auth: AuthService) {
 
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
@@ -36,7 +39,7 @@ export class Page2 {
 
   queryTasks(infiniteScroll) {
       if(this.showOnlyCompletedActives) {
-        this.items =  this.af.database.list('/todos', {
+        this.items =  this.af.database.list('/todos/'+this.auth.uid, {
                         query: {
                           orderByChild: 'completed',
                           equalTo: true,
@@ -44,7 +47,7 @@ export class Page2 {
                         }
                       });
       } else {
-        this.items =  this.af.database.list('/todos', {
+        this.items =  this.af.database.list('/todos/'+this.auth.uid, {
                           query: {
                           limitToFirst: this.limit
                         }
