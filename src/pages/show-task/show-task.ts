@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { FirebaseApp } from 'angularfire2';
+import { AuthService } from '../../providers/auth-service';
 
 /*
   Generated class for the ShowTask page.
@@ -13,12 +15,21 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ShowTaskPage {
   item: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-      this.item = this.navParams.get("item");
-  }
+  image: string;
+  firebase: any;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ShowTaskPage');
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+               public auth: AuthService,
+               @Inject(FirebaseApp) firebaseApp: any) {
+
+      this.firebase = firebaseApp;
+      
+      this.item = this.navParams.get("item");
+      this.firebase.storage().ref().child(this.auth.uid+"/"+this.item.$key)
+      .getDownloadURL()
+      .then(url => {
+        this.image = url;
+      });
   }
 
 }

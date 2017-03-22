@@ -7,12 +7,13 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Tarefa {{item.title}}</ion-title>
+    <ion-title>Tarefa</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <p>{{item.fullNote}}</p>
+  <img [src]="image"  *ngIf="image" />
+  <p>{{item.note}}</p>
 </ion-content>

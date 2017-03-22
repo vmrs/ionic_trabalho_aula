@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 
 import { ShowTaskPage } from '../show-task/show-task';
 
-import {AngularFire, FirebaseListObservable} from 'angularfire2';
+import { FirebaseApp, AngularFire, FirebaseListObservable} from 'angularfire2';
 
 import { AuthService } from '../../providers/auth-service';
 
@@ -19,13 +19,17 @@ export class Page2 {
   showTaskPage = ShowTaskPage;
   showOnlyCompletedActives = false;
   limit = 15;
+  firebase: any;
 
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
               public af: AngularFire, 
               public actionSheetCtrl: ActionSheetController,
-              public auth: AuthService) {
+              public auth: AuthService,
+              @Inject(FirebaseApp) firebaseApp: any) {
+    
+    this.firebase = firebaseApp;
 
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
@@ -76,6 +80,15 @@ export class Page2 {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Ações',
       buttons: [
+        {
+          text: 'Visualizar Tarefa',
+          icon: 'search',
+          handler: () => {
+            this.navCtrl.push(this.showTaskPage, {
+              item: item
+            })
+          }
+        },
         {
           text: 'Marcar como feita',
           icon: 'archive',

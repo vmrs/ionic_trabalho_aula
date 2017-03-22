@@ -9,11 +9,15 @@
 
 <ion-content padding>
 
+  <img [src]="cameraData" *ngIf="cameraData">
+
   <ion-textarea placeholder="Digite uma tarefa" rows="5" [(ngModel)]="txtTarefa"> 
   </ion-textarea>
 
-  <button ion-button block (click)="salvarTarefa()" >Salvar Tarefa</button>
 
+
+  <button ion-button block color="dark" (click)="openCamera()" >Tirar uma foto</button>
+  <button ion-button block (click)="salvarTarefa()" >Salvar Tarefa</button>
 </ion-content>
 
 
