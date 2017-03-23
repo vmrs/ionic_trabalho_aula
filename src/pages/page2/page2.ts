@@ -77,11 +77,14 @@ export class Page2 {
 
   itemTapped(event, item) {
     this.presentActionSheet(item);
+  }
 
-    // // That's right, we're pushing to ourselves!
-    // this.navCtrl.push(this.showTaskPage, {
-    //   item: item
-    // });
+  itemPressed(event, item) {
+    this.markAsUrgent(item);
+  }
+
+  itemTest(event) {
+    console.log(JSON.stringify(event));
   }
 
   presentActionSheet(item) {

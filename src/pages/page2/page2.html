@@ -13,11 +13,10 @@
 </ion-header>
 
 <ion-content>
-
-  
   <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of items  | async">
-      <button ion-item (click)="itemTapped($event, item)">
+      <button ion-item  (tap)="itemTapped($event, item)"
+                        (press)="itemPressed($event, item)">
         <ion-icon item-left name="{{ item.urgent ? 'warning' : 'happy' }}"></ion-icon>
         <h2>{{item.note}}</h2>
         <p>{{ getDate(item.date) }}</p>      
