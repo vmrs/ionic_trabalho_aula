@@ -4,11 +4,6 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Listagem de Tarefas</ion-title>
-
-    <ion-buttons end>
-      <ion-toggle right [(ngModel)]="showOnlyCompletedActives" (ngModelChange)="queryTasks()"></ion-toggle>
-    </ion-buttons>
-    
   </ion-navbar>
 </ion-header>
 
@@ -39,4 +34,14 @@
   </ion-infinite-scroll>
 </ion-content>
 
+<ion-footer>
+  <ion-segment [(ngModel)]="showOnlyCompletedActives" (ngModelChange)="queryTasks()" color="primary">
+    <ion-segment-button value="false">
+      All
+    </ion-segment-button>
+    <ion-segment-button value="true">
+      Completed
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>
 

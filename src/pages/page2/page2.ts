@@ -17,7 +17,7 @@ export class Page2 {
   icons: string[];
   items: FirebaseListObservable<any>;
   showTaskPage = ShowTaskPage;
-  showOnlyCompletedActives = false;
+  showOnlyCompletedActives = "false";
   limit = 15;
   firebase: any;
   reorder = false;
@@ -43,8 +43,8 @@ export class Page2 {
     this.queryTasks(null);
   }
 
-  queryTasks(infiniteScroll) {
-      if(this.showOnlyCompletedActives) {
+  queryTasks(infiniteScroll) {  
+      if(this.showOnlyCompletedActives == "true") {
         this.items =  this.af.database.list('/todos/'+this.auth.uid, {
                         query: {
                           orderByChild: 'completed',
