@@ -90,6 +90,13 @@ export class Page2 {
           }
         },
         {
+          text: 'Marcar como urgente',
+          icon: 'warning',
+          handler: () => {
+            this.markAsUrgent(item);
+          }
+        },
+        {
           text: 'Marcar como feita',
           icon: 'archive',
           handler: () => {
@@ -116,9 +123,18 @@ export class Page2 {
     actionSheet.present();
   }
 
+  getDate(milis: string) {
+    return (new Date(milis)).toLocaleDateString();
+  }
+
   markAsCompleted(item) {
     this.items.update(item, {completed: true});
   }
+
+  markAsUrgent(item) {
+    this.items.update(item, {urgent: true});
+  }
+  
 
   delete(item) {
     this.items.remove(item);

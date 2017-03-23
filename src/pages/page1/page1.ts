@@ -78,22 +78,28 @@ export class Page1 {
 
   salvar() : void {
     this.items.push({
-        note: this.txtTarefa
+        note: this.txtTarefa,
+        date: (new Date()).getTime(),
+        urgent: false
     }).then(
 
         function(result){
-          this.firebase.storage().ref("/"+this.auth.uid+"/"+result.key)
-          .putString(this.imageData, "base64")
-          .then(
+          if(this.imageData) {
+            this.firebase.storage().ref("/"+this.auth.uid+"/"+result.key)
+            .putString(this.imageData, "base64")
+            .then(
 
-              function(snapshot) {
-                this.txtTarefa = "";
-                this.cameraData = null;
-                this.imageData = null;
+                function(snapshot) {
+                  this.txtTarefa = "";
+                  this.cameraData = null;
+                  this.imageData = null;
+                  
+                }.bind(this)
                 
-              }.bind(this)
-              
-          )
+            )
+          } else {
+            this.txtTarefa = "";
+          }
         }.bind(this)
 
     );    
