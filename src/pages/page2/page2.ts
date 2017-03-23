@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 
-import { NavController, NavParams, ActionSheetController, reorderArray } from 'ionic-angular';
+import { ModalController, NavController, NavParams, ActionSheetController, reorderArray } from 'ionic-angular';
 
 import { ShowTaskPage } from '../show-task/show-task';
 
@@ -25,6 +25,7 @@ export class Page2 {
 
 
   constructor(public navCtrl: NavController, 
+              public modalCtrl: ModalController,
               public navParams: NavParams, 
               public af: AngularFire, 
               public actionSheetCtrl: ActionSheetController,
@@ -95,9 +96,16 @@ export class Page2 {
           text: 'Visualizar Tarefa',
           icon: 'search',
           handler: () => {
-            this.navCtrl.push(this.showTaskPage, {
+            let modal = this.modalCtrl.create(ShowTaskPage, {
               item: item
-            })
+            });
+            modal.present();
+            modal.onDidDismiss(params => {
+              console.log(JSON.stringify(params));
+              if(params.markAsCompleted){
+                this.markAsCompleted(item);
+              }
+            });
           }
         },
         {

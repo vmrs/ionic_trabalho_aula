@@ -8,6 +8,11 @@
 
   <ion-navbar>
     <ion-title>Tarefa</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="close()">
+        Close
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -16,4 +21,9 @@
 <ion-content padding>
   <img [src]="image"  *ngIf="image" />
   <p>{{item.note}}</p>
+  <button ion-button block color="danger"
+          (click)="closeAndMarkAsCompleted()">
+        Marcar como feita
+  </button>
 </ion-content>
+

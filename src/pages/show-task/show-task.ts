@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavController, NavParams } from 'ionic-angular';
 import { FirebaseApp } from 'angularfire2';
 import { AuthService } from '../../providers/auth-service';
 
@@ -20,7 +20,8 @@ export class ShowTaskPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
                public auth: AuthService,
-               @Inject(FirebaseApp) firebaseApp: any) {
+               @Inject(FirebaseApp) firebaseApp: any,
+               public viewCtrl: ViewController) {
 
       this.firebase = firebaseApp;
       
@@ -29,7 +30,15 @@ export class ShowTaskPage {
       .getDownloadURL()
       .then(url => {
         this.image = url;
-      });
+      }).catch((err) => console.log(err));
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
+  }
+
+  closeAndMarkAsCompleted() {
+    this.viewCtrl.dismiss({markAsCompleted: true});
   }
 
 }
