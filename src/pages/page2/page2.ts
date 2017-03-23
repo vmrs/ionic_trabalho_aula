@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, reorderArray } from 'ionic-angular';
 
 import { ShowTaskPage } from '../show-task/show-task';
 
@@ -20,6 +20,8 @@ export class Page2 {
   showOnlyCompletedActives = false;
   limit = 15;
   firebase: any;
+  reorder = false;
+  itemsArray: any;
 
 
   constructor(public navCtrl: NavController, 
@@ -37,7 +39,7 @@ export class Page2 {
     // Let's populate this page with some filler content for funzies
     this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
     'american-football', 'boat', 'bluetooth', 'build'];
-
+    
     this.queryTasks(null);
   }
 
@@ -50,14 +52,20 @@ export class Page2 {
                           limitToFirst: this.limit
                         }
                       });
+                      
       } else {
         this.items =  this.af.database.list('/todos/'+this.auth.uid, {
-                          query: {
+                        query: {
+                          orderByChild: 'position',
                           limitToFirst: this.limit
                         }
                       });
       }
 
+      this.items.subscribe(
+        result => { this.itemsArray=result; }
+      );
+      
       if(infiniteScroll) {
         this.items.subscribe(
           result => infiniteScroll.complete()
@@ -139,4 +147,16 @@ export class Page2 {
   delete(item) {
     this.items.remove(item);
   }
+
+  reorderItems(indexes){
+      let orderedItems = reorderArray(this.itemsArray, indexes);
+      for(let i = 0; i < orderedItems.length; i++){
+        this.setPosition(orderedItems[i], i);
+      }
+  }
+
+  setPosition(item, position) {
+    this.items.update(item, {position: position});
+  }
+
 }

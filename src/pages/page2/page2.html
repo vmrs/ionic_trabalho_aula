@@ -15,7 +15,7 @@
 <ion-content>
 
   
-  <ion-list>
+  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let item of items  | async">
       <button ion-item (click)="itemTapped($event, item)">
         <ion-icon item-left name="{{ item.urgent ? 'warning' : 'happy' }}"></ion-icon>
