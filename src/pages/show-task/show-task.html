@@ -19,11 +19,13 @@
 
 
 <ion-content padding>
-  <img [src]="image"  *ngIf="image" />
-  <p>{{item.note}}</p>
+  
+  <app-show-task [item]="item" ></app-show-task>
+
   <button ion-button block color="danger"
-          (click)="closeAndMarkAsCompleted()">
+        (click)="closeAndMarkAsCompleted()">
         Marcar como feita
   </button>
 </ion-content>
+
 

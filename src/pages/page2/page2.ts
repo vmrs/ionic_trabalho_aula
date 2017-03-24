@@ -102,7 +102,7 @@ export class Page2 {
             modal.present();
             modal.onDidDismiss(params => {
               console.log(JSON.stringify(params));
-              if(params.markAsCompleted){
+              if(params && params.markAsCompleted){
                 this.markAsCompleted(item);
               }
             });

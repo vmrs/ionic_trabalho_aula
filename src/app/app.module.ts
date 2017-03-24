@@ -5,6 +5,7 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { ShowTaskPage } from '../pages/show-task/show-task';
 import { LoginPage } from '../pages/login/login';
+import { ShowTaskComponent } from '../components/show-task.component';
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
@@ -43,7 +44,8 @@ const cloudSettings: CloudSettings = {
     Page1,
     Page2,
     ShowTaskPage,
-    LoginPage
+    LoginPage,
+    ShowTaskComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),

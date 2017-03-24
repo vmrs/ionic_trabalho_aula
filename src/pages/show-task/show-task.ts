@@ -15,22 +15,12 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class ShowTaskPage {
   item: any;
-  image: string;
-  firebase: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
                public auth: AuthService,
                @Inject(FirebaseApp) firebaseApp: any,
                public viewCtrl: ViewController) {
-
-      this.firebase = firebaseApp;
-      
       this.item = this.navParams.get("item");
-      this.firebase.storage().ref().child(this.auth.uid+"/"+this.item.$key)
-      .getDownloadURL()
-      .then(url => {
-        this.image = url;
-      }).catch((err) => console.log(err));
   }
 
   close() {
