@@ -12,11 +12,14 @@
   <img [src]="cameraData" *ngIf="cameraData">
 
   <ion-textarea placeholder="Digite uma tarefa" rows="5" [(ngModel)]="txtTarefa"> 
-  </ion-textarea>
 
+  </ion-textarea>
+  
+  <p *ngIf="marker">Local selecionado: {{marker.latitude}} {{marker.longitude}}</p>
 
 
   <button ion-button block color="dark" (click)="openCamera()" >Tirar uma foto</button>
+  <button ion-button block color="dark" (click)="openMap()" >Selecionar local no mapa</button>
   <button ion-button block (click)="salvarTarefa()" >Salvar Tarefa</button>
 </ion-content>
 

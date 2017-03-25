@@ -1,0 +1,37 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Map Location</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="close()">
+        Close
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <sebm-google-map
+      [latitude]="marker.latitude"
+      [longitude]="marker.longitude"
+      [zoom]="10"
+      (mapClick)="setMarker($event)" >
+      
+      <sebm-google-map-marker
+        [latitude]="marker.latitude"
+        [longitude]="marker.longitude"
+        *ngIf="marker">
+      </sebm-google-map-marker>
+
+    </sebm-google-map>
+
+    <button ion-button block color="danger"
+        (click)="closeAndSendMarker()">
+        Confirmar local
+    </button>
+    
+</ion-content>
+
+

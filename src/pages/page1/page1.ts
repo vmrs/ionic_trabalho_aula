@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 
-import { NavController, AlertController } from 'ionic-angular';
+import { ModalController, NavController, AlertController } from 'ionic-angular';
 
 import { FirebaseApp, AngularFire, FirebaseListObservable} from 'angularfire2';
 
@@ -8,6 +8,8 @@ import { FirebaseApp, AngularFire, FirebaseListObservable} from 'angularfire2';
 import { AuthService } from '../../providers/auth-service';
 
 import {Camera} from 'ionic-native';
+
+import { TaskMapPage } from "../task-map/task-map"
 
 
 @Component({
@@ -21,10 +23,15 @@ export class Page1 {
   size: number = 0;
   cameraData: string;
   imageData: string;
+  marker: {latitude, longitude};
   firebase: any;
 
-  constructor(public navCtrsl: NavController, private alertCtrl: AlertController, af: AngularFire, private auth: AuthService,
-              @Inject(FirebaseApp) firebaseApp: any) {
+  constructor(public navCtrsl: NavController,
+              private alertCtrl: AlertController, 
+              af: AngularFire, 
+              private auth: AuthService,
+              @Inject(FirebaseApp) firebaseApp: any,
+              private modalCtrl: ModalController) {
 
     this.firebase = firebaseApp;
     this.items = af.database.list('/todos/'+this.auth.uid);
@@ -34,6 +41,16 @@ export class Page1 {
 
   }
 
+  openMap(){
+    let modal = this.modalCtrl.create(TaskMapPage);
+    modal.present();
+    modal.onDidDismiss(params => {
+      if(params && params.marker) {
+        this.marker = params.marker;
+      }
+    });
+  }
+  
   openCamera() {
     let options = {
       sourceType: Camera.PictureSourceType.CAMERA,
@@ -80,7 +97,8 @@ export class Page1 {
     this.items.push({
         note: this.txtTarefa,
         date: (new Date()).getTime(),
-        urgent: false
+        urgent: false,
+        marker: this.marker
     }).then(
 
         function(result){

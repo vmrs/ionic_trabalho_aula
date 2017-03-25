@@ -1,3 +1,15 @@
 <img [src]="image"  *ngIf="image" />
+
+<sebm-google-map *ngIf="item.marker" 
+      [latitude]="item.marker.latitude"
+      [longitude]="item.marker.longitude"
+      [zoom]="10" >
+      
+      <sebm-google-map-marker
+        [latitude]="item.marker.latitude"
+        [longitude]="item.marker.longitude">
+      </sebm-google-map-marker>
+</sebm-google-map>
+
 <p>{{item.note}}</p>
 

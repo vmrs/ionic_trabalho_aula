@@ -5,12 +5,15 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { ShowTaskPage } from '../pages/show-task/show-task';
 import { LoginPage } from '../pages/login/login';
+import { TaskMapPage } from '../pages/task-map/task-map';
 import { ShowTaskComponent } from '../components/show-task.component';
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
+import { AgmCoreModule } from 'angular2-google-maps/core';
  
 export const firebaseConfig = {
   apiKey: "AIzaSyDBsHvTR0wYxf5V0b-C_JjoGErHJCEho8g",
@@ -45,12 +48,16 @@ const cloudSettings: CloudSettings = {
     Page2,
     ShowTaskPage,
     LoginPage,
-    ShowTaskComponent
+    ShowTaskComponent,
+    TaskMapPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    CloudModule.forRoot(cloudSettings)
+    CloudModule.forRoot(cloudSettings),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAv1LUSVMAAAuQKzV8M9o1bGHP5DmlU4Aw'
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -58,7 +65,8 @@ const cloudSettings: CloudSettings = {
     Page1,
     Page2,
     ShowTaskPage,
-    LoginPage
+    LoginPage,
+    TaskMapPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
 })

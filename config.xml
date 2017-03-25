@@ -44,4 +44,11 @@
   <allow-navigation href="http://192.168.0.103:8100"/>
   <allow-navigation href="http://10.51.6.101:8100"/>
   <allow-navigation href="http://192.168.0.103:8080"/>
+  <allow-navigation href="http://10.50.6.106:8100"/>
+  <allow-navigation href="http://10.51.70.155:8080"/>
+  <allow-navigation href="http://10.51.70.155:1024"/>
+  <allow-navigation href="http://10.7.12.215:8080"/>
+  <allow-navigation href="http://192.168.0.23:8080"/>
+  <allow-navigation href="http://192.168.0.23:1024"/>
+  <allow-navigation href="http://192.168.0.23:8100"/>
 </widget>
