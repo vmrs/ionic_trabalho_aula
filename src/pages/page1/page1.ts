@@ -98,7 +98,8 @@ export class Page1 {
         note: this.txtTarefa,
         date: (new Date()).getTime(),
         urgent: false,
-        marker: this.marker
+        completed: false
+        //marker: this.marker
     }).then(
 
         function(result){

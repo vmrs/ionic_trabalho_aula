@@ -25,7 +25,7 @@ export const firebaseConfig = {
 
 const cloudSettings: CloudSettings = {
   'core': {
-    'app_id': 'd9067871'
+    'app_id': '9373d455'
   },
   'push': {
     'sender_id': '901124139844',

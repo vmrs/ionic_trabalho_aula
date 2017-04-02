@@ -8,6 +8,8 @@ import { FirebaseApp, AngularFire, FirebaseListObservable} from 'angularfire2';
 
 import { AuthService } from '../../providers/auth-service';
 
+import { Page1 } from '../page1/page1';
+
 @Component({
   selector: 'page-page2',
   templateUrl: 'page2.html'
@@ -17,11 +19,12 @@ export class Page2 {
   icons: string[];
   items: FirebaseListObservable<any>;
   showTaskPage = ShowTaskPage;
-  showOnlyCompletedActives = "false";
+  showOnlyCompletedActives = "all";
   limit = 15;
   firebase: any;
   reorder = false;
   itemsArray: any;
+  page1: any = Page1;
 
 
   constructor(public navCtrl: NavController, 
@@ -45,11 +48,20 @@ export class Page2 {
   }
 
   queryTasks(infiniteScroll) {  
-      if(this.showOnlyCompletedActives == "true") {
+      if(this.showOnlyCompletedActives == "completo") {
         this.items =  this.af.database.list('/todos/'+this.auth.uid, {
                         query: {
                           orderByChild: 'completed',
                           equalTo: true,
+                          limitToFirst: this.limit
+                        }
+                      });
+                      
+      }else if(this.showOnlyCompletedActives == "ncompleto") {
+        this.items =  this.af.database.list('/todos/'+this.auth.uid, {
+                        query: {
+                          orderByChild: 'completed',
+                          equalTo: false,
                           limitToFirst: this.limit
                         }
                       });
@@ -168,6 +180,10 @@ export class Page2 {
 
   setPosition(item, position) {
     this.items.update(item, {position: position});
+  }
+
+  openPage(page){
+    this.navCtrl.push(page);
   }
 
 }
