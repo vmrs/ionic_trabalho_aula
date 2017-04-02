@@ -22,6 +22,14 @@
         <p>{{ getDate(item.date) }}</p>      
       </button>
       <ion-item-options>
+        <button ion-button (click)="markAsUrgent(item)">
+          <ion-icon item-left name="warning"></ion-icon>
+          Urgent
+        </button>
+        <button ion-button (click)="markAsCompleted(item)">
+          <ion-icon item-left name="archive"></ion-icon>
+          Feito
+        </button>
         <button ion-button color="danger" (click)="delete(item)">
           <ion-icon item-left name="trash"></ion-icon>
           Delete

@@ -19,13 +19,24 @@
 
 
 <ion-content padding>
-  
-  <app-show-task [item]="item" ></app-show-task>
+  <ion-card>
+    <ion-card-content>
+      <app-show-task center [item]="item" ></app-show-task>
+    </ion-card-content>
+    
 
-  <button ion-button block color="danger"
-        (click)="closeAndMarkAsCompleted()">
-        Marcar como feita
-  </button>
+    <ion-item>
+      <button ion-button clear item-left (click)="closeAndMarkAsUrgent()">
+        Urgent</button>
+      <button ion-button clear (click)="closeAndMarkAsCompleted()">
+        Feito</button>
+      <button ion-button clear item-right color="danger" (click)="closeAndDelete()">
+        Deletar</button>
+    </ion-item>
+  </ion-card>
+  
+
+  
 </ion-content>
 
 

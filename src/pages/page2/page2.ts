@@ -116,6 +116,10 @@ export class Page2 {
               console.log(JSON.stringify(params));
               if(params && params.markAsCompleted){
                 this.markAsCompleted(item);
+              }else if(params && params.markAsUrgent){
+                this.markAsUrgent(item);
+              }else if(params && params.delete){
+                this.delete(item);
               }
             });
           }

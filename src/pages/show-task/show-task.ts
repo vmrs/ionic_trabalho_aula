@@ -30,5 +30,11 @@ export class ShowTaskPage {
   closeAndMarkAsCompleted() {
     this.viewCtrl.dismiss({markAsCompleted: true});
   }
+  closeAndMarkAsUrgent(){
+    this.viewCtrl.dismiss({markAsUrgent:true});
+  }
+  closeAndDelete(){
+    this.viewCtrl.dismiss({delete:true});
+  }
 
 }
