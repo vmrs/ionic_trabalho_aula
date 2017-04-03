@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 
-import { ModalController, NavController, AlertController } from 'ionic-angular';
+import { ModalController, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { FirebaseApp, AngularFire, FirebaseListObservable} from 'angularfire2';
 
@@ -26,18 +26,40 @@ export class Page1 {
   marker: {latitude, longitude};
   firebase: any;
 
+  item: any;
+  showSalvarBtn: any;
+  showEditarBtn: any;
+
   constructor(public navCtrsl: NavController,
-              private alertCtrl: AlertController, 
+              private alertCtrl: AlertController,
               af: AngularFire, 
               private auth: AuthService,
               @Inject(FirebaseApp) firebaseApp: any,
-              private modalCtrl: ModalController) {
+              private modalCtrl: ModalController,
+              public navParams: NavParams) {
 
     this.firebase = firebaseApp;
     this.items = af.database.list('/todos/'+this.auth.uid);
-    this.items.subscribe(
+    
+    //update
+    if(navParams && navParams.get("item")){
+      this.showSalvarBtn = false;
+      this.showEditarBtn = true;
+
+      this.item = this.navParams.get("item");
+      this.txtTarefa = this.item.note;
+      this.imageData = this.item.imageData;
+      this.marker = this.item.marker;
+      
+    }else{
+      this.showSalvarBtn = true;
+      this.showEditarBtn = false;
+      this.items.subscribe(
       val => this.size = val.length
     )
+    }
+      
+
 
   }
 
@@ -122,5 +144,55 @@ export class Page1 {
         }.bind(this)
 
     );    
+  }
+
+  editarTarefa() : void {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar',
+      message: this.txtTarefa,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Editar',
+          handler: () => {
+            this.update();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  update():void{
+    this.items.update(this.item, {
+      note: this.txtTarefa
+      //marker: this.marker
+    } )/*.then(
+
+        function(result){
+          if(this.imageData) {
+            this.firebase.storage().ref("/"+this.auth.uid+"/"+result.key)
+            .putString(this.imageData, "base64")
+            .then(
+
+                function(snapshot) {
+                  this.txtTarefa = "";
+                  this.cameraData = null;
+                  this.imageData = null;
+                  
+                }.bind(this)
+                
+            )
+          } else {
+            this.txtTarefa = "";
+          }
+        }.bind(this)
+
+    )*/; 
   }
 }

@@ -104,6 +104,22 @@ export class Page2 {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Ações',
       buttons: [
+
+        {
+          text: 'Editar',
+          handler:()=>{
+            this.navCtrl.push(this.page1,{item:item});
+            /*
+            let modal = this.modalCtrl.create(Page1, {
+              item: item
+            });
+            modal.present();
+            modal.onDidDismiss(params =>{
+              //this.items.update(item, params.edit);
+            });
+            */
+          }
+        },
         {
           text: 'Visualizar Tarefa',
           icon: 'search',
@@ -187,7 +203,7 @@ export class Page2 {
   }
 
   openPage(page){
-    this.navCtrl.push(page);
+    this.navCtrl.push(page,"");
   }
 
 }
